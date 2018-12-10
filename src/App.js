@@ -73,53 +73,47 @@ class Card extends Component {
     })
   }
 
-  // inputOrder = (e) => {
-  //   const inputValue = e.target.value;
-  //   const max = this.state.stock;
-  //   const min = 0; 
-
-  //   if (inputValue > max || inputValue < min) {
-  //     console.log(e.target.value)
-  //   }
-  // }
-
   render() {
     const hidden = this.state.hidden;
     const empty = this.state.stockLeft === 0;
     const cancel = this.state.order === 0;
 
     const action = hidden ? (
-        <div className="row">
-          <button className="btn waves-effect waves-light purple darken-4" type="submit" name="action" onClick={() => this.buyItem(this.props.title)}>
-            Buy
-            <span><i className="material-icons right">shopping_basket</i></span>
-          </button>  
+        <div className="input-field card-input">
+          <div className="flex flex-center">
+            <button className="btn waves-effect waves-light purple darken-4" type="submit" name="action" onClick={() => this.buyItem(this.props.title)}>
+              Buy
+              <span><i className="material-icons right">shopping_basket</i></span>
+            </button>  
+          </div>
         </div>
       ) : ( 
-        <div className="row">
-          <button 
-            className={"btn-small waves-effect waves-light purple darken-3 col s3 " + (cancel ? "disabled" : null)}
-            onClick={this.minusOrder}
-          >
-            <i className="material-icons">remove</i>
-          </button>
-          <input 
-            id="input-quantity" 
-            placeholder="1" 
-            name="input-quantity" 
-            type="number" 
-            min="0" 
-            max={this.props.stock} 
-            className="col s2 offset-s1 center-align validate" 
-            value={this.state.order} 
-            readOnly
-          />
-          <button 
-            className={"btn-small waves-effect waves-light purple darken-3 col s3 offset-s1 " + (empty ? "disabled" : null)} 
-            onClick={this.addOrder}
-          >
-            <i className="material-icons">add</i>
-          </button>                
+        <div className="input-field card-input">
+          <div className="flex flex-space-around">
+            <button 
+              className={"btn waves-effect waves-light purple darken-3 " + (cancel ? "disabled" : null)}
+              onClick={this.minusOrder}
+            >
+              <i className="material-icons">remove</i>
+            </button>
+            <input 
+              id="input-quantity" 
+              placeholder="1" 
+              name="input-quantity" 
+              type="number" 
+              min="0" 
+              max={this.props.stock} 
+              className="center-align validate input-order" 
+              value={this.state.order} 
+              readOnly
+            />
+            <button 
+              className={"btn waves-effect waves-light purple darken-3 " + (empty ? "disabled" : null)} 
+              onClick={this.addOrder}
+            >
+              <i className="material-icons">add</i>
+            </button>                
+          </div>
         </div>
       )
 
@@ -159,6 +153,85 @@ const CardGroup = (props) => {
 }
 
 
+// Add Item
+class AddItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      stock: undefined,
+      img_src: ''
+    }
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+  
+  handleChange = e => {
+    const key = e.target.name;
+    const value = e.target.value;
+    this.setState({
+      [key]: value
+    })
+  }
+  
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.addItem(this.state)
+    this.setState({
+      name: '',
+      stock: undefined,
+      img_src: ''
+    })
+
+
+    // let id = Math.random();
+    // let newList = {
+    //   id: id, 
+    //   name: this.state.name.slice(),
+    //   stock: this.state.stock.slice(),
+    //   img_src: this.state.img_src.slice()
+    // }
+    // console.log(newList)
+  
+    // let list = [...this.state.list, newList]
+  }
+
+  render() {
+    return(
+      <div className="container section row">
+        <h3>Add Items</h3>
+        <form className="col s12 margin-top" onSubmit={this.handleSubmit}>
+          <div className="row">
+            <div className="input-field col l4">
+              <label htmlFor="name-item">Item's Name</label>
+              <input id="name-item" placeholder="Item's name" name="name" type="text" className="validate" onChange={this.handleChange} value={this.state.name} />
+            </div>
+            <div className="input-field col l4">
+              <label htmlFor="quantity">Item's Quantity</label>
+              <input id="stock" placeholder="How much your item is?" name="stock" type="number" min="0" className="validate" onChange={this.handleChange} value={this.state.stock} />
+            </div>
+          </div>
+          <div className="row">
+            <div className="input-field col l6">
+              <label htmlFor="img-src">Item's Source Path</label>
+              <input id="img-src" placeholder="Where is the item's image stored?" name="img_src" type="text" className="validate" onChange={this.handleChange} value={this.state.img_src} />
+              <span className="helper-text" data-error="wrong" data-success="right">Example: /assets/img/reactjs.png</span>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col s4">
+              <button className="btn waves-effect waves-light purple darken-4" type="submit" name="action" onClick={this.handleSubmit}>
+                Submit
+                <i className="material-icons right">send</i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    )
+  }
+}
+
 
 // App Component
 class App extends Component {
@@ -171,41 +244,15 @@ class App extends Component {
         {id: 2, name: 'javascript', stock: 6, img_src: ''},
         {id: 3, name: 'react js', stock: 3, img_src: ''},
         {id: 4, name: 'redux', stock: 7, img_src: ''},
-      ],
-      name: '',
-      stock: undefined,
-      img_src: '',
+      ]
     }
-
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleChange = e => {
-    const key = e.target.name;
-    const value = e.target.value;
+  AddItem = (newItem) => {
+    newItem.id = Math.random();
+    let newList = [...this.state.list, newItem]
     this.setState({
-      [key]: value
-    })
-  }
-
-  handleSubmit = e => {
-    e.preventDefault();
-    let id = Math.random();
-    let newList = {
-      id: id, 
-      name: this.state.name.slice(),
-      stock: this.state.stock.slice(),
-      img_src: this.state.img_src.slice()
-    }
-    console.log(newList)
-
-    let list = [...this.state.list, newList]
-    this.setState({
-      list: list,
-      name: '',
-      stock: undefined,
-      img_src: ''
+      list: newList
     })
   }
 
@@ -214,39 +261,8 @@ class App extends Component {
       <div>
         <Navbar />        
         <CardGroup list={this.state.list} />
+        <AddItem addItem={this.AddItem} />
 
-        {/* Form Add Items */}
-        <div className="container section row">
-          <h3>Add Items</h3>
-          <form className="col s12 margin-top" onSubmit={this.handleSubmit}>
-            <div className="row">
-              <div className="input-field col l4">
-                <label htmlFor="name-item">Item's Name</label>
-                <input id="name-item" placeholder="Item's name" name="name" type="text" className="validate" onChange={this.handleChange} value={this.state.name} />
-              </div>
-              <div className="input-field col l4">
-                <label htmlFor="quantity">Item's Quantity</label>
-                <input id="stock" placeholder="How much your item is?" name="stock" type="number" min="0" className="validate" onChange={this.handleChange} value={this.state.stock} />
-              </div>
-            </div>
-            <div className="row">
-              <div className="input-field col l6">
-                <label htmlFor="img-src">Item's Source Path</label>
-                <input id="img-src" placeholder="Where is the item's image stored?" name="img_src" type="text" className="validate" onChange={this.handleChange} value={this.state.img_src} />
-                <span className="helper-text" data-error="wrong" data-success="right">Example: /assets/img/reactjs.png</span>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col s4">
-                <button className="btn waves-effect waves-light purple darken-4" type="submit" name="action" onClick={this.handleSubmit}>
-                  Submit
-                  <i className="material-icons right">send</i>
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-          
           {/* Total Item */}
         <div>
 

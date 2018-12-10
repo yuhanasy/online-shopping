@@ -14,6 +14,10 @@
   margin-top: 40px;
 }
 
+.hidden {
+  display: none;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -22,3 +26,9 @@
     transform: rotate(360deg);
   }
 }
+
+/* input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+} */

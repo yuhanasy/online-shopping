@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import 'materialize-css/dist/css/materialize.min.css'
-// import M from 'materialize-css'
+import M from 'materialize-css'
 
 
 // Navbar Component
@@ -111,7 +111,7 @@ class App extends Component {
         {id: 4, name: 'redux', stock: 7, img_src: ''},
       ],
       name: '',
-      stock: 0,
+      stock: undefined,
       img_src: '',
     }
 
@@ -142,7 +142,7 @@ class App extends Component {
     this.setState({
       list: list,
       name: '',
-      stock: 0,
+      stock: undefined,
       img_src: ''
     })
   }

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import 'materialize-css/dist/css/materialize.min.css'
 // eslint-disable-next-line no-unused-vars
 import M from 'materialize-css'
+import Navbar from './Navbar';
+import CardGroup from './CardGroup'
 
 // Add Item
 class AddItem extends Component {

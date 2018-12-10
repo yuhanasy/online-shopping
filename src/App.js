@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import 'materialize-css/dist/css/materialize.min.css'
+// eslint-disable-next-line no-unused-vars
 import M from 'materialize-css'
 
 
@@ -27,21 +28,66 @@ class Card extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hidden: true
+      hidden: true,
+      stock: this.props.stock,
+      order: 0,
+      stockLeft: this.props.stock
     }
     this.buyItem = this.buyItem.bind(this)
   }
 
-  buyItem(itemName) {
-    console.log(itemName);
+  buyItem = () => {
+    this.addOrder();
     this.setState({
       hidden: !this.state.hidden
     })
-    console.log(this.state.hidden)
   }
   
+  minusOrder = () => {
+    let order = this.state.order;
+    order -= 1;
+    let stockLeft = this.state.stockLeft;
+    stockLeft += 1;
+
+    this.setState({
+      order: order,
+      stockLeft: stockLeft,
+    })
+
+    if (order === 0) {
+      this.setState({
+        hidden: !this.state.hidden
+      })
+    }
+  }
+
+  addOrder = () => {
+    let order = this.state.order;
+    order += 1;
+    let stockLeft = this.state.stockLeft;
+    stockLeft -= 1;
+
+    this.setState({
+      order: order,
+      stockLeft: stockLeft,
+    })
+  }
+
+  // inputOrder = (e) => {
+  //   const inputValue = e.target.value;
+  //   const max = this.state.stock;
+  //   const min = 0; 
+
+  //   if (inputValue > max || inputValue < min) {
+  //     console.log(e.target.value)
+  //   }
+  // }
+
   render() {
     const hidden = this.state.hidden;
+    const empty = this.state.stockLeft === 0;
+    const cancel = this.state.order === 0;
+
     const action = hidden ? (
         <div className="row">
           <button className="btn waves-effect waves-light purple darken-4" type="submit" name="action" onClick={() => this.buyItem(this.props.title)}>
@@ -49,13 +95,29 @@ class Card extends Component {
             <span><i className="material-icons right">shopping_basket</i></span>
           </button>  
         </div>
-      ) : (
+      ) : ( 
         <div className="row">
-          <button className="btn-small waves-effect waves-light purple darken-3 col s3">
+          <button 
+            className={"btn-small waves-effect waves-light purple darken-3 col s3 " + (cancel ? "disabled" : null)}
+            onClick={this.minusOrder}
+          >
             <i className="material-icons">remove</i>
           </button>
-          <input id="input-quantity" placeholder="1" name="input-quantity" type="number" min="0" max={this.props.stock} className="col s2 offset-s1 center-align validate" onChange={this.handleChange} value={this.state.name} />
-          <button className="btn-small waves-effect waves-light purple darken-3 col s3 offset-s1">
+          <input 
+            id="input-quantity" 
+            placeholder="1" 
+            name="input-quantity" 
+            type="number" 
+            min="0" 
+            max={this.props.stock} 
+            className="col s2 offset-s1 center-align validate" 
+            value={this.state.order} 
+            readOnly
+          />
+          <button 
+            className={"btn-small waves-effect waves-light purple darken-3 col s3 offset-s1 " + (empty ? "disabled" : null)} 
+            onClick={this.addOrder}
+          >
             <i className="material-icons">add</i>
           </button>                
         </div>
@@ -65,7 +127,7 @@ class Card extends Component {
       <div className="col s12 m4 l3">
         <div className="card small center-align">
           <div className="card-image">
-            <div className="img-dummy center-aligned purple lighten-5"></div>
+            <div className="img-dummy center-aligned purple lighten-5">{this.state.stock}, {this.state.stockLeft}</div>
           </div>
           <div className="card-title">
             {this.props.title}

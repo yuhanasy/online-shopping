@@ -10,6 +10,14 @@
   top: 12px;
 }
 
+.margin-top {
+  margin-top: 40px;
+}
+
+.hidden {
+  display: none;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -17,4 +25,35 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-space-around {
+  justify-content: space-around;
+  align-items: center;
+}
+
+.input-order {
+  width: 20px !important;
+  margin-left: 0;
+  margin-bottom: 0 !important;
+  height: 35px !important;
+}
+
+.card-input {
+  margin: 0 auto !important;
 }
